@@ -3,8 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <array>
 
-using std::vector, std::string, std::istream;
+using std::vector, std::array, std::string, std::istream;
 
 class AhoCorasick
 {
@@ -17,48 +18,56 @@ class AhoCorasick
         };
 
         class Node{
-        public:
-            vector<Node*> children;
-            int numBranches = 0;
-            Node* failLink = nullptr;
-            bool isWord = false;
+            public:
+                /**
+                 * @brief children - can be lowercase letters, numbers, period, or underscore
+                 */
+                array<Node*, 38> children{};
+                int numBranches = 0;
+                Node* failLink = nullptr;
+                bool isWord = false;
 
-            char data;
+                char data;
 
-            /**
-             * @brief Aho_CNode - default constructor
-             */
-            Node();
+                /**
+                 * @brief Aho_CNode - default constructor
+                 */
+                Node();
 
-            /**
-             * @brief Aho_CNode - constructor
-             * @param data - value to set as this node's data
-             */
-            Node(char data);
+                /**
+                 * @brief Aho_CNode - constructor
+                 * @param data - value to set as this node's data
+                 */
+                Node(char data);
 
-            void addStrings(vector<string> strings);
+                void addStrings(vector<string> strings);
 
-            void addStrings(vector<IteratorPair>::iterator first, vector<IteratorPair>::iterator last);
+                void addStrings(vector<IteratorPair>::iterator first, vector<IteratorPair>::iterator last);
 
-            void addString(string str);
+                void addString(const string &str);
 
-            void addString(IteratorPair str);
+                void addString(IteratorPair &str);
 
-            vector<string> getAll();
+                vector<string> getAll();
 
-            void getAll(vector<string>& output, const string& current);
+                void getAll(vector<string>& output, const string& current);
 
-            Node& operator=(char data);
+                Node& operator=(char data);
 
-            bool operator==(char data);
+                bool operator==(char data);
 
-            /**
-             * @brief Aho_CNode - default destructor
-             */
-            ~Node();
+                /**
+                 * @brief Aho_CNode - default destructor
+                 */
+                ~Node();
+
+            private:
+                int getCharIndex(char c);
         };
 
         Node* root = nullptr;
+
+
     public:
 
         /**
